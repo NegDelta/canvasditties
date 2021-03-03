@@ -32,6 +32,14 @@ var M = new Map();
 
 function canvupdate() {
 	console.log("Frame! :D");
+	// update whole canvas
+	// TODO: replace with variable offset
+	for(iy = -250; iy < 250; iy++) {
+		for (ix = -250; ix < 250; ix++) {
+			ctx.fillStyle = M.get(ix,iy) ? "white" : "green";
+			ctx.fillRect(ix+250, iy+250, 1, 1);
+		}
+	}
 }
 
 canv.addEventListener("frame", canvupdate);
