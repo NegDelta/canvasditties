@@ -8,14 +8,15 @@ const frameevent = new Event("frame");
 class Map {
 	constructor() {
 		this.cells = {};
+		this.fallbackval = false;
+		this.centerpt = {x: -250, y: -250};
 	}
-	default = false;
 	get(x, y) {
 		if (!(y in this.cells)) {
-			return this.default;
+			return this.fallbackval;
 		}
 		if (!(x in this.cells[y])) {
-			return this.default;
+			return this.fallbackval;
 		}
 		return this.cells[y][x];
 	}
@@ -24,23 +25,27 @@ class Map {
 			this.cells[y] = {};
 		}
 		this.cells[y][x] = val;
-		canv.dispatchEvent(frameevent);
+		
+		ctx.fillStyle = val ? "white" : "green";
+		ctx.fillRect(
+			x - this.centerpt.x,
+			y - this.centerpt.y, 1, 1
+		);
+	}
+	canvupdate() {
+		console.log("Frame! :D");
+		// TODO: replace with variable offset
+		var perf0 = performance.now();
+		for(iy = -250; iy < 250; iy++) {
+			for (ix = -250; ix < 250; ix++) {
+			}
+		}
+		dperf = performance.now() - perf0;
+		console.log("Took " + dperf.toString() + " ms");
 	}
 }
 
 var M = new Map();
-
-function canvupdate() {
-	console.log("Frame! :D");
-	// update whole canvas
-	// TODO: replace with variable offset
-	for(iy = -250; iy < 250; iy++) {
-		for (ix = -250; ix < 250; ix++) {
-			ctx.fillStyle = M.get(ix,iy) ? "white" : "green";
-			ctx.fillRect(ix+250, iy+250, 1, 1);
-		}
-	}
-}
 
 canv.addEventListener("frame", canvupdate);
 
